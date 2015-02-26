@@ -1,0 +1,7 @@
+*.tmp
+*.swp
+*~
+*.bak
+*.e*
+*.o*
+out_home.txt
