@@ -8,6 +8,7 @@ import numpy as np
 from math import *
 from gpaw import GPAW
 from gpaw import PW
+from func_task2 import *
 
 #mol90 = read('POSCAR_0.9')
 #  calc = GPAW(mode=PW(50), h= 0.2, xc='PBE', nbands=162, kpts=(int(k),int(k),int(k)), txt='mol90.txt')
@@ -23,43 +24,7 @@ mu = 0.5
 rMax = 6
 dr=0.2
 
-def Psi(rMax, dr):
-  r_c = 6.5
-  matrixSize = rMax/dr  
-
-  i = 0
-  psi = np.zeros(matrixSize)
-  for r in range(0, rMax+dr, dr):
-    x = (r-r_c)/3
-    if x<=0:
-      psi[i] = pow(x,4)/(1+pow(x,4))
-      i += 1
-    else:
-      psi[i] = 0
-      i += 1
-  return(psi)
-
-def Phi(rMax, dr ,A ,lmbda, psi):
-  matrixSize = rMax/dr  
-  phi = np.zeros(matrixSize)
-  i = 0
-
-  for r in range(0, rMax+dr, dr):
-    phi[i] = A*exp(-lmbda*r)
-    i += 1
-  phi = phi*psi
-  return(phi)
-
-def F(D, rho):
-  f = -D*np.sqrt(rho)
-  return(f)
-
-def Rho(rMax, dr, mu, psi):
-  nbrSteps = rMax/dr
-  r = np.linspace(0, rMax, nbrSteps)
-  rho = np.exp(-2*mu*r)
-  rho = rho*psi
-  return(rho)
+# here's where we had the function declarations earlier
 
 #def optimizationFunc(refMol_90, A,lmbda,D,mu):
 #  #test
