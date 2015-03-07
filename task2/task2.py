@@ -1,4 +1,4 @@
-
+from scipy.optimize import leastsq
 from ase import *
 from ase.optimize import BFGS
 from ase.structure import molecule 
@@ -16,6 +16,7 @@ from eam_calculator import get_calc
 def getReferenceValues():
   mol = read('res_POSCAR_1.0.traj')
   forces = mol.get_forces()
+  forces = forces.reshape(1,forces.size)
   # later, we need to load the other files as well...  
   return(forces)
 
@@ -24,24 +25,26 @@ def getEamValues(p):
   calc = get_calc(p)
   mol.set_calculator(calc)
   forces = mol.get_forces()
+  forces = forces.reshape(1,forces.size)
   
   return(forces)
 
 
 def errfunc(p):
   Aref = getReferenceValues()
+  Aref = Aref[0]
+  Aeam = getEamValues(p)
+  Aeam = Aeam[0]
+  ret = [0]
+  for i in range(Aref.size):
+    ret = ret + [0]
 
-  Aeam = getEamValues()  
+  for i in range(Aref.size):
+    ret[i] = float(Aref[i])-float(Aeam[i])
 
-  return( Aref-Aeam )
+  return( ret )
 
 # end of errfunc declaration
-
-#mol90 = read('POSCAR_0.9')
-#  calc = GPAW(mode=PW(50), h= 0.2, xc='PBE', nbands=162, kpts=(int(k),int(k),int(k)), txt='mol90.txt')
-#  mol90.set_calculator(calc)
-
-refMol_90 = read('res_POSCAR_0.9.traj');
 
 #initialize variables
 A = 10000
@@ -50,8 +53,6 @@ D = 5
 mu = 0.5
 
 p = (A, lmbda, D, 2*mu)
-calc = get_calc(p)
 
-mol.set_calculator(calc)
-
+print(leastsq(errfunc, p))
   

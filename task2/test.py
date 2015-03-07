@@ -1,11 +1,18 @@
+import numpy as np
 from scipy.optimize import leastsq
 
 
 
 def func(a,x):
-  return(a[0]*x + a[1])
+  return(a*x**2)
 
-def errfunc(a,x,y):
-  return(y-func(a,x))
+def errfunc(a):
+  y = [50.1, 17.9, 32.2]
+  x = [5,3,4]
+  ret = [0,0,0]
+  for i in range(3):
+    ret[i] = float(y[i])-float(func(a,x[i]))
+  return(ret)
 
-print(leastsq(errfunc, [1,2] , args=([1, 2, 3],[ 1, 3, 5])))
+
+print(leastsq(errfunc, 1 ,))
