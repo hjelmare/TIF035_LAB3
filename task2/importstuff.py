@@ -8,3 +8,5 @@ from gpaw import GPAW
 from gpaw import PW
 from eam_calculator import get_calc
 from functions import *
+from ase.neb import NEB
+from ase.optimize import MDMin

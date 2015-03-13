@@ -24,6 +24,6 @@ mu = 0.5
 p = (A, lmbda, D, 2*mu)
 
 print(leastsq(errfunc, p))
-print("w for 1 lat 5 eng 0.1")  
+print("w for 1 lat 50 eng 1")  
 time = datetime.now().time()
 print(time)

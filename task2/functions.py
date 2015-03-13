@@ -71,8 +71,8 @@ def errfunc(p):
     ret = ret + [0]
     w = w + [w[0]]
   
-  w[1] = 5   # lattice param, remember to change task2py output as well
-  w[2] = 0.1   # energy
+  w[1] = 50   # lattice param, remember to change task2py output as well
+  w[2] = 1   # energy
 
   for i in range(Aref.size):
     ret[i] = float(Aref[i])-float(Aeam[i])
