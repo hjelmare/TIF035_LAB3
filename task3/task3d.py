@@ -17,7 +17,6 @@ from ase.optimize import QuasiNewton
 
 time = datetime.now().time()
 print(time)
-print('jobbigt')
 
 #initialize variables
 A = 2011
@@ -30,17 +29,29 @@ b = a / 2
 
 p = (A, lmbda, D, 2*mu)
 calc = get_calc(p)
-calc = GPAW(mode=PW(200))
+#calc = GPAW(mode=PW(200))
 
-initial = read('res_POSCAR_1.0.traj')
-#initial = Atoms('Al', positions=[[0,0,0],[0,b,b],[b,0,b],[b,b,0]]
+N = 10
+
+#initial = read('res_POSCAR_1.0.traj')
+start = Atoms('Al4', positions=[[0,0,0],[0,b,b],[b,0,b],[b,b,0]])
+initial = Atoms()
+for z in range(N):
+  for y in range(N):
+    for x in range(N):
+      temp = start.copy()
+      temp.translate([x*a,y*a,z*a])
+      for i in range(4):
+        print((x,y,z,i))
+        initial.append(temp[i])
+
 tempPos = initial[0].position
 del initial[0]
 final = initial.copy()
 final[1].position = tempPos
 
-QuasiNewton(initial).run(fmax=0.05)
-QuasiNewton(final).run(fmax=0.05)
+#QuasiNewton(initial).run(fmax=0.05)
+#QuasiNewton(final).run(fmax=0.05)
 
 images = [initial]
 images += [initial.copy() for i in range(3)]
@@ -53,7 +64,7 @@ neb.interpolate()
 for image in images[1:4]:
   image.set_calculator(calc)
 
-#optimizer = BFGS(neb, trajectory='neb.traj')
+print("its go time")
 optimizer = MDMin(neb, trajectory='neb.traj')
 optimizer.run(fmax=0.04)
 
